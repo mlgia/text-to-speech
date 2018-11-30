@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>es.accenture.mlgia</groupId>
+	<artifactId>mlgia-text-to-speech</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>mlgia-text-to-speech</name>
+	<description>SpringBoot Application text-to-speech</description>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.0.2.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+
+	<repositories>
+		<repository>
+            <!-- MaryTTS repo-->
+			<id>repo.jcenter.maven</id>
+			<name>JCenter Binary Repository</name>
+			<url>https://jcenter.bintray.com</url>
+		</repository>
+	</repositories>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+		<docker-hub-organization>mlgia</docker-hub-organization>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+
+		<dependency>
+		    <groupId>com.ibm.watson.developer_cloud</groupId>
+		    <artifactId>text-to-speech</artifactId>
+		    <version>3.4.0</version>
+		</dependency>
+
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-jersey</artifactId>
+		</dependency>
+
+		<dependency>
+		    <groupId>es.accenture.mlgia</groupId>
+		    <artifactId>mlgia-dto</artifactId>
+		    <version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>de.dfki.mary</groupId>
+			<artifactId>voice-cmu-rms-hsmm</artifactId>
+			<version>5.2</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>
+		
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+		        <groupId>com.spotify</groupId>
+		        <artifactId>docker-maven-plugin</artifactId>
+		        <version>1.0.0</version>
+		        <configuration>
+		            <imageName>${docker-hub-organization}/${project.artifactId}</imageName>
+		            <dockerDirectory>src/main/docker</dockerDirectory>
+		            <imageTags>
+		                <imageTag>${project.version}</imageTag>
+		                <imageTag>latest</imageTag>
+		            </imageTags>
+		            <serverId>docker-hub</serverId>
+		            <resources>
+		                <resource>
+		                    <targetPath>/</targetPath>
+		                    <directory>${project.build.directory}</directory>
+		                    <include>${project.build.finalName}.jar</include>
+		                </resource>
+		            </resources>
+		        </configuration>
+		    </plugin>
+		</plugins>
+	</build>
+
+</project>
