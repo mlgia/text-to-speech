@@ -69,8 +69,7 @@ public class TextToSpeechController    {
 
     @RequestMapping(value = "/audio", method = RequestMethod.POST)
    	public TextToSpeechDTO  getAudioWatson(HttpServletResponse response,
-   			@RequestBody InputTextToSpeechDTO text) throws Exception
-	{
+   			@RequestBody InputTextToSpeechDTO text) throws Exception {
     	log.debug("Llamada a Audio con texto:" + text);
     	if (text != null) {
  
